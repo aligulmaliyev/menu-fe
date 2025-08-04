@@ -4,6 +4,8 @@ import { endpoints } from "@/common/api/endpoints";
 import type { ICategoryResponse } from "@/models/category";
 import { toast } from "sonner";
 import { create } from "zustand";
+import type { IQRData } from "./useQRData";
+import { QR_DATA } from "@/constants";
 
 type TCategoryStore = {
   categories: ICategoryResponse[];
@@ -25,8 +27,9 @@ export const useCategoriesStore = create<TCategoryStore>()((set) => ({
   },
   fetchCategories: async () => {
     try {
+        const qrData = JSON.parse(localStorage.getItem(QR_DATA) || "") as IQRData;
       set({ loading: true, error: null });
-      const response = await api.get(`${endpoints.categories.getAll}/1`);
+      const response = await api.get(`${endpoints.categories.getAll}/${qrData.hotelId}`);
       set({ categories: response.data });
     } catch (error: any) {
       console.error("Error fetching categories:", error);

@@ -7,6 +7,8 @@ import type {
 } from "@/models/product";
 import { toast } from "sonner";
 import { create } from "zustand";
+import { type IQRData } from "./useQRData";
+import { QR_DATA } from "@/constants";
 
 type TProductStore = {
   products: IProductListResponse[];
@@ -27,8 +29,11 @@ export const useProductsStore = create<TProductStore>()((set) => ({
 
   fetchProducts: async () => {
     try {
+      const qrData = JSON.parse(localStorage.getItem(QR_DATA) || "") as IQRData;
       set({ loading: true, error: null });
-      const response = await api.get(`${endpoints.products.getAll}/1`);
+      const response = await api.get(
+        `${endpoints.products.getAll}/${qrData.hotelId}`
+      );
       set({ products: response.data });
     } catch (error: any) {
       console.error("Error fetching products:", error);
@@ -39,8 +44,11 @@ export const useProductsStore = create<TProductStore>()((set) => ({
   },
   fetchProductById: async (productId: number) => {
     try {
+      const qrData = JSON.parse(localStorage.getItem(QR_DATA) || "") as IQRData;
       set({ loading: true, error: null });
-      const response = await api.get(endpoints.products.getById(productId, 1));
+      const response = await api.get(
+        endpoints.products.getById(productId, qrData.hotelId)
+      );
       set({ product: response.data });
       return response.data;
     } catch (error: any) {
