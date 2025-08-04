@@ -9,18 +9,22 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { QR_DATA } from "@/constants";
 import type { IBaseCartOptions, ICartItem, ISpicy } from "@/models/cart";
 import { useCartStore } from "@/store/useCart";
 import { useModalStore } from "@/store/useModal";
+import { useOrdersStore, type IOrderItem } from "@/store/useOrders";
+import type { IQRData } from "@/store/useQRData";
 import { ShoppingCart, Plus, Minus, Edit3 } from "lucide-react";
 
 export const CartPopup = () => {
+  const { createOrder } = useOrdersStore();
   const {
     isCartPopupOpen,
     setIsCartPopupOpen,
     setIsProductPopupOpen,
     itemOptions,
-  setProductId,
+    setProductId,
     setItemOptions,
   } = useModalStore();
 
@@ -30,7 +34,8 @@ export const CartPopup = () => {
     getTotalPrice,
     getTotalItems,
     calculateItemPrice,
-    setEditingCartItem
+    setEditingCartItem,
+    clearCart
   } = useCartStore();
 
 
@@ -45,6 +50,33 @@ export const CartPopup = () => {
       comment: cartItem?.comment || "",
     } as IBaseCartOptions)
   };
+
+  const handleOrder = async () => {
+    const qrData = JSON.parse(localStorage.getItem(QR_DATA) || '') as IQRData
+    const products = cart.map((cartItem: ICartItem) => {
+      const { product, addons, comment, quantity,
+        size, spicy 
+      } = cartItem
+      const addonIds = addons.map(addon => addon.id)
+      return {
+        productId: product.id,
+        quantity: quantity,
+        note: comment,
+        addonIds,
+        size:size.id,
+        spicy
+      }
+    })
+    const requestModel = {
+      hotelId: qrData.hotelId,
+      roomId: qrData.roomId,
+      items: products,
+    } as unknown as IOrderItem
+
+    await createOrder(requestModel)
+    clearCart()
+    setIsCartPopupOpen(false);
+  }
 
   return (
     <Sheet open={isCartPopupOpen} onOpenChange={setIsCartPopupOpen}>
@@ -90,7 +122,7 @@ export const CartPopup = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            disabled={item.quantity<=1}
+                            disabled={item.quantity <= 1}
                             onClick={() => changeCartQuantity(item.product.id, 'decrease')}
                           >
                             <Minus className="h-3 w-3" />
@@ -118,7 +150,7 @@ export const CartPopup = () => {
                 </div>
                 <Button
                   onClick={() => {
-                    setIsCartPopupOpen(false);
+                    handleOrder()
                   }}
                   className="w-full h-12 text-lg font-semibold"
                 >

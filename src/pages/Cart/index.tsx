@@ -7,9 +7,13 @@ import { useModalStore } from "@/store/useModal";
 import { ShoppingCart, Plus, Minus, Edit3, X } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ProductDetailsModal } from "../Home/components/ProductDetailsModal";
+import { useOrdersStore, type IOrderItem } from "@/store/useOrders";
+import { QR_DATA } from "@/constants";
+import type { IQRData } from "@/store/useQRData";
 
 export const Cart = () => {
   const navigate = useNavigate();
+  const { createOrder } = useOrdersStore()
 
   const {
     cart,
@@ -18,10 +22,11 @@ export const Cart = () => {
     getTotalPrice,
     getTotalItems,
     calculateItemPrice,
-    setEditingCartItem
+    setEditingCartItem,
+    clearCart
   } = useCartStore();
 
-  const { setItemOptions, setIsProductPopupOpen,isProductPopupOpen, setProductId } =
+  const { setItemOptions, setIsProductPopupOpen, isProductPopupOpen, setProductId } =
     useModalStore();
 
   const openCartItemDetails = (cartItem: ICartItem) => {
@@ -36,10 +41,33 @@ export const Cart = () => {
     } as IBaseCartOptions)
   };
 
+  const handleOrder = async () => {
+    const qrData = JSON.parse(localStorage.getItem(QR_DATA) || '') as IQRData
+    const products = cart.map((cartItem: ICartItem) => {
+      const { product, addons, comment, quantity, size, spicy } = cartItem
+      const addonIds = addons.map(addon => addon.id)
+      return {
+        productId: product.id,
+        quantity: quantity,
+        note: comment,
+        addonIds,
+        size: size.id,
+        spicy
+      }
+    })
+    const requestModel = {
+      hotelId: qrData.hotelId,
+      roomId: qrData.roomId,
+      items: products,
+    } as unknown as IOrderItem
+
+    await createOrder(requestModel)
+    clearCart()
+  }
 
   return (
     <>
-     {isProductPopupOpen && <ProductDetailsModal />}
+      {isProductPopupOpen && <ProductDetailsModal />}
       <div className="pb-20 px-4 py-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Sifarişləriniz</h2>
@@ -90,7 +118,7 @@ export const Cart = () => {
                             item.addons.length > 0 && (
                               <p className="text-xs text-gray-500">
                                 Əlavələr:
-                                {item.addons.map(addon=>addon.name).join(", ")}
+                                {item.addons.map(addon => addon.name).join(", ")}
                               </p>
                             )}
                           {item.comment && (
@@ -169,7 +197,7 @@ export const Cart = () => {
                 </span>
               </div>
               <Button
-                // onClick={initiatePayment}
+                onClick={handleOrder}
                 className="w-full h-12 text-lg font-semibold"
                 size="lg"
               >
