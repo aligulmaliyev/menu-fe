@@ -1,0 +1,9 @@
+services:
+  api:
+    image: hotel-menu:latest
+    container_name: hotel-menu
+    restart: unless-stopped
+    ports:
+      - "3001:80" 
+    env_file:
+      - .env
