@@ -1,0 +1,87 @@
+name: Build & Deploy Menu FE (Frontend, Docker, self-hosted)
+
+on:
+  push:
+    branches: [develop, master]
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/menu-frontend
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Select env file for build
+        run: |
+          if [ "${GITHUB_REF##*/}" = "develop" ]; then cp .env.test .env; else cp .env.prod .env; fi
+          ls -l .env
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Build & Push image (tag by branch)
+        run: |
+          if [ "${GITHUB_REF##*/}" = "develop" ]; then TAG=test; else TAG=prod; fi
+          docker build -t $IMAGE:$TAG -t $IMAGE:${GITHUB_SHA} .
+          docker push $IMAGE:$TAG
+          docker push $IMAGE:${GITHUB_SHA}
+
+  deploy:
+    needs: build-and-push
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login GHCR (pull needs auth)
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Ensure network
+        run: docker network create qrinn_net || true
+
+      - name: Compose up (only current env)
+        working-directory: ${{ github.workspace }}/deploy
+        run: |
+          if [ "${GITHUB_REF##*/}" = "develop" ]; then SVC=menu-fe-test; else SVC=menu-fe-prod; fi
+          docker compose pull $SVC || true
+          docker compose up -d $SVC
+          docker system prune -f
+      
+      - name: Publish Nginx vhost & reload edge
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Dinamik qovluğu yarat + faylı kopyala (sudo lazımdırsa saxla, yoxdursa sil)
+          sudo mkdir -p /srv/qr-inn/nginx-dynamic
+          sudo install -m 644 -D "$GITHUB_WORKSPACE/deploy/nginx/conf.d/menu.conf" \
+            /srv/qr-inn/nginx-dynamic/menu.conf
+
+          # qrinn-nginx varsa syntax test + reload (TTY YOX, -it istifadə ETMƏ)
+          if docker ps --format '{{.Names}}' | grep -Fxq 'qrinn-nginx'; then
+            docker exec qrinn-nginx nginx -t
+            docker exec qrinn-nginx nginx -s reload
+          else
+            echo "WARNING: qrinn-nginx is not running on this host; skipping reload"
+          fi
+
+
