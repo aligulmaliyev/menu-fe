@@ -1,0 +1,18 @@
+services:
+  menu-fe-prod:
+    image: ghcr.io/aligulmaliyev/menu-frontend:prod
+    container_name: menu-fe-prod
+    expose: ["80"]         
+    restart: unless-stopped
+    networks: [qrinn_net]
+
+  menu-fe-test:
+    image: ghcr.io/aligulmaliyev/menu-frontend:test
+    container_name: menu-fe-test
+    expose: ["80"]
+    restart: unless-stopped
+    networks: [qrinn_net]
+
+networks:
+  qrinn_net:
+    external: true
