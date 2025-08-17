@@ -5,6 +5,7 @@ import Home from "@/pages/Home";
 import { Cart } from "@/pages/Cart";
 import { Services } from "@/pages/Services";
 import { Feedback } from "@/pages/Feedback";
+import { NotFound } from "@/pages/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -23,4 +24,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
+    {
+    path: "not-found",
+    Component: NotFound
+  },
+  {
+    path: "*",
+    Component: NotFound
+  }
 ]);

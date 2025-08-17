@@ -7,6 +7,7 @@ export interface IQRData {
   id: string;
   hotelId: number;
   roomId: number;
+  hotelName: string;
 }
 
 interface IQRDataStore {
@@ -21,10 +22,13 @@ export const useQRDataStore = create<IQRDataStore>((set) => ({
   fetchQrData: async (id: string) => {
     try {
       const response = await api.get(`/qr-codes/${id}`);
-      set({ qrData: response.data });
-      localStorage.setItem(QR_DATA, JSON.stringify(response.data));
+      if (response?.data) {
+        set({ qrData: response.data });
+        localStorage.setItem(QR_DATA, JSON.stringify(response.data));
+      }
     } catch (error: any) {
       toast.error("Xəta baş verdi: " + error.message);
+      throw error;
     }
   },
 }));

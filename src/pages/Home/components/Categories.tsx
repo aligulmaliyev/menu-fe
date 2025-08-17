@@ -42,7 +42,7 @@ export const Categories = () => {
                                 data-category={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all flex-shrink-0 ${selectedCategory === category.id
-                                    ? "bg-orange-500 text-white shadow-md scale-105"
+                                    ? "bg-[#4EA36C] text-white shadow-md scale-105"
                                     : "bg-white text-gray-600 border hover:bg-gray-50"
                                     }`}
                             >

@@ -23,10 +23,10 @@ export default function ServiceModals() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <Card className="p-6 m-4 max-w-sm w-full">
             <div className="text-center">
-              <Bell className="h-16 w-16 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Garson Çağır</h3>
+              <Bell className="h-16 w-16 text-[#4EA36C] mx-auto mb-4" />
+              <h3 className="text-xl font-bold mb-2">Ofsiant Çağır</h3>
               <p className="text-gray-600 mb-6">
-                Garsonun otağınıza gəlməsini istəyirsiniz?
+                Ofsiantun otağınıza gəlməsini istəyirsiniz?
               </p>
               <div className="flex gap-3">
                 <Button
@@ -38,7 +38,7 @@ export default function ServiceModals() {
                 </Button>
                 <Button
                   onClick={confirmWaiterCall}
-                  className="flex-1 bg-orange-500 hover:bg-orange-600"
+                  className="flex-1 bg-[#4EA36C] hover:bg-[#3E8656]"
                 >
                   Bəli, Çağır
                 </Button>

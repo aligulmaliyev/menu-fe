@@ -232,7 +232,7 @@ export const ProductDetailsModal = () => {
             </div>
 
             <div className="flex items-center gap-2 pt-4">
-              <ChefHat className="h-5 w-5 text-orange-500" />
+              <ChefHat className="h-5 w-5 text-[#4EA36C]" />
               <span className="text-sm text-gray-600">
                 Aşbazımız qeydlərinizi nəzərə alacaq
               </span>
