@@ -14,9 +14,9 @@ export default function Header() {
   const { pathname } = useLocation();
   const qrData = JSON.parse(localStorage.getItem(QR_DATA) || "{}") as IQRData;
 
-  useLayoutEffect(()=>{
-    document.title = qrData?.hotelName||  "QR Inn" 
-  },[])
+  useLayoutEffect(() => {
+    document.title = qrData?.hotelName || "QR Inn"
+  }, [])
 
   return (
     <div className="sticky top-0 z-40 bg-white border-b shadow-sm">
