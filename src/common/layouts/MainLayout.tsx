@@ -13,7 +13,7 @@ export const MainLayout = () => {
 
     useEffect(() => {
         if (id) fetchQrData(id).catch(() => {
-            navigate("/404");  // xəta olsa yönləndir
+            navigate("/404"); 
         });
         else
             navigate('/not-found')
