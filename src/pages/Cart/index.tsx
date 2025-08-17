@@ -127,7 +127,7 @@ export const Cart = () => {
                             </p>
                           )}
                         </div>
-                        <p className="text-lg font-semibold text-orange-600 mt-2">
+                        <p className="text-lg font-semibold text-[#3E8656] mt-2">
                           {calculateItemPrice(item).toFixed(
                             2
                           )}
@@ -139,7 +139,7 @@ export const Cart = () => {
                           size="sm"
                           variant="outline"
                           onClick={() => openCartItemDetails(item)}
-                          className="h-8 w-8 p-0 text-orange-600 border-orange-200 hover:bg-orange-50"
+                          className="h-8 w-8 p-0 text-[#3E8656] border-[#c0ecc0] hover:bg-[#dff6de]"
                         >
                           <Edit3 className="h-3 w-3" />
                         </Button>
@@ -192,7 +192,7 @@ export const Cart = () => {
             <div className="fixed bottom-20 left-0 right-0 bg-white border-t p-4">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-lg font-semibold">Cəmi:</span>
-                <span className="text-2xl font-bold text-orange-600">
+                <span className="text-2xl font-bold text-[#3E8656]">
                   {getTotalPrice().toFixed(2)} ₼
                 </span>
               </div>

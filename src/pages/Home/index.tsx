@@ -62,7 +62,7 @@ export default function Home() {
                                         </h3>
                                         <Badge
                                             variant="secondary"
-                                            className="ml-2 text-lg font-bold text-orange-600 bg-orange-50"
+                                            className="ml-2 text-lg font-bold text-[#3E8656] bg-[#dff6de]"
                                         >
                                             {product.price.toFixed(2)} ₼
                                         </Badge>
@@ -90,7 +90,7 @@ export default function Home() {
                                     <div className="flex gap-2">
                                         <Button
                                             onClick={() => addToCart(product as ISingleProductResponse)}
-                                            className="flex-1 h-10 bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                                            className="flex-1 h-10 bg-[#4EA36C] hover:bg-[#3E8656] text-white font-medium"
                                         >
                                             <Plus className="h-4 w-4 mr-2" />
                                             Səbətə Əlavə Et
@@ -101,7 +101,7 @@ export default function Home() {
                                                 setProductId(product.id)
                                             }}
                                             variant="outline"
-                                            className="h-10 px-3 border-orange-200 text-orange-600 hover:bg-orange-50"
+                                            className="h-10 px-3 border-[#c0ecc0] text-[#3E8656] hover:bg-[#dff6de]"
                                         >
                                             <Info className="h-4 w-4" />
                                         </Button>
@@ -117,7 +117,7 @@ export default function Home() {
             {cart.length > 0 && (
                 <div className="fixed bottom-20 left-4 right-4 z-40">
                     <div
-                        className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl shadow-xl cursor-pointer transform transition-all duration-200 hover:scale-105 active:scale-95"
+                        className="bg-gradient-to-r from-[#4EA36C] to-[#3E8656] rounded-2xl shadow-xl cursor-pointer transform transition-all duration-200 hover:scale-105 active:scale-95"
                         onClick={() => setIsCartPopupOpen(true)}
                     >
                         <div className="flex items-center justify-between p-4">

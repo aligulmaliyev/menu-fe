@@ -1,7 +1,28 @@
-import { Building2, Home, Users } from "lucide-react";
+import { Home, ShoppingCart, Settings, MessageSquare } from "lucide-react";
 
 export const navigation = [
-  { name: "Ana səhifə", href: "/", icon: Home },
-  { name: "Otellər", href: "/hotels", icon: Building2 },
-  { name: "Hotel Adminləri", href: "/users", icon: Users },
+  {
+    id: "menu",
+    label: "Menyu",
+    icon: Home,
+    path: "/",
+  },
+  {
+    id: "cart",
+    label: "Səbət",
+    icon: ShoppingCart,
+    path: "/cart",
+  },
+  {
+    id: "services",
+    label: "Xidmətlər",
+    icon: Settings,
+    path: "/services",
+  },
+  {
+    id: "feedback",
+    label: "Rəy",
+    icon: MessageSquare,
+    path: "/feedback",
+  },
 ];

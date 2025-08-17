@@ -20,8 +20,8 @@ export const Services = () => {
   const services: Service[] = [
     {
       id: "waiter",
-      name: "Garson Çağır",
-      description: "Garson otağınıza gələcək",
+      name: "Ofsiant Çağır",
+      description: "Ofsiant otağınıza gələcək",
       icon: Bell,
       action: callWaiter,
     },
@@ -80,8 +80,8 @@ export const Services = () => {
                 onClick={service.action}
               >
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <IconComponent className="h-6 w-6 text-orange-600" />
+                  <div className="w-12 h-12 bg-[#e1f7e1]-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <IconComponent className="h-6 w-6 text-[#3E8656]" />
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-1">
                     {service.name}

@@ -115,7 +115,7 @@ export const CartPopup = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => openCartItemDetails(item)}
-                            className="h-8 w-8 p-0 text-orange-600 border-orange-200"
+                            className="h-8 w-8 p-0 text-[#3E8656] border-[#c0ecc0]"
                           >
                             <Edit3 className="h-3 w-3" />
                           </Button>
@@ -144,7 +144,7 @@ export const CartPopup = () => {
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-lg font-semibold">Cəmi:</span>
-                  <span className="text-2xl font-bold text-orange-600">
+                  <span className="text-2xl font-bold text-[#3E8656]">
                     {getTotalPrice().toFixed(2)} ₼
                   </span>
                 </div>
